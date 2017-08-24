@@ -1,0 +1,84 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Novo Patrimonio</ui:define>
+    
+    <ui:define name="corpo">
+    	<f:metadata>
+			<o:viewParam name="patrimonio" value="#{cadastraPatrimonioBean.patrimonio}" />
+		</f:metadata>
+    
+    	<h1>Novo Patrimonio</h1>
+    
+    	<h:form id="frmCadastro">
+	    	<p:messages id="messages" autoUpdate="true" closable="true" />
+	    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastraPatrimonioBean.salvar}" update="frmCadastro"  icon="ui-icon-disk"/>
+	    		</p:toolbarGroup>
+	    		<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/patrimonio/PesquisaPatrimonios.xhtml"  icon="ui-icon-search"/>					
+				</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px"
+	    			columnClasses="rotulo, campo">
+	    		<p:outputLabel value="Código" for="codigo"/>
+	    		<p:inputText id="codigo" size="20" maxlength="20" value="#{cadastraPatrimonioBean.patrimonio.codigo}" readonly="true"/>
+	
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome" size="60" maxlength="80" value="#{cadastraPatrimonioBean.patrimonio.nome}"/>
+	    		
+	    		<p:outputLabel value="Nota fiscal" for="nota"/>
+	    		<p:inputText id="nota" size="15" maxlength="80" value="#{cadastraPatrimonioBean.patrimonio.notaFiscal}"/>
+	    		
+	    		<p:outputLabel value="Valor" for="valor"/>
+	    		<p:inputText id="valor" size="10" maxlength="80" styleClass="moeda" value="#{cadastraPatrimonioBean.patrimonio.valor}">
+	    		<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+	    		</p:inputText>
+	    	
+	    		<p:outputLabel value="Status" for="status"/>
+	    		<p:selectOneMenu id="status" value="#{cadastraPatrimonioBean.patrimonio.status}">
+	    			<f:selectItem itemLabel="Selecione o status" />
+	    			<f:selectItems value="#{cadastraPatrimonioBean.status}" var="status"  
+						itemLabel="#{status}" itemValue="#{status}"/>
+	    		</p:selectOneMenu>
+	    		
+	    		<p:outputLabel value="Tipo" for="tipo"/>
+	    		<p:selectOneMenu id="tipo" value="#{cadastraPatrimonioBean.patrimonio.tipo}">
+	    			<f:selectItem itemLabel="Selecione o tipo" />
+	    			<f:selectItems value="#{cadastraPatrimonioBean.tipos}" var="tipo" 
+						itemLabel="#{tipo.descricao}" itemValue="#{tipo}"/>
+	    		</p:selectOneMenu>
+	    		
+	    		<p:outputLabel value="Local" for="local"/>
+	    		<p:selectOneMenu id="local" value="#{cadastraPatrimonioBean.patrimonio.local}">
+	    			<f:selectItem itemLabel="Selecione o status" />
+	    			<f:selectItems value="#{cadastraPatrimonioBean.locais}" var="local" 
+						itemLabel="#{local.descricao}" itemValue="#{local}"/>
+	    		</p:selectOneMenu>
+	    		
+	    		<p:outputLabel value="Fornecedor" for="fornecedor"/>
+	    		<p:selectOneMenu id="fornecedor" value="#{cadastraPatrimonioBean.patrimonio.fornecedor}">
+	    			<f:selectItem itemLabel="Selecione o fornecedor" />
+	    			<f:selectItems value="#{cadastraPatrimonioBean.fornecedores}" var="fornecedor" 
+						itemLabel="#{fornecedor.nome}" itemValue="#{fornecedor}"/>
+	    		</p:selectOneMenu>
+	    		
+	    		<p:outputLabel value="Apolice seguro" for="apolice"/>
+	    		<p:selectOneMenu id="apolice" value="#{cadastraPatrimonioBean.patrimonio.apoliceSeguro}">
+	    			<f:selectItem itemLabel="Selecione a apolice" />
+	    			<f:selectItems value="#{cadastraPatrimonioBean.apolices}" var="apolice" 
+						itemLabel="#{apolice.descricao}" itemValue="#{apolice}"/>
+	    		</p:selectOneMenu>
+	    		
+	    	</p:panelGrid>
+    	</h:form>
+    </ui:define>
+</ui:composition>

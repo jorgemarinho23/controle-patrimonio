@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="titulo">Sistema controle de patrimonio</ui:insert></title>
+        <h:outputStylesheet library="css" name="sistema.css" />
+        <h:outputScript library="js" name="jquery.maskMoney.js"/>
+	</h:head>
+
+	<h:body>
+		<p:ajaxStatus styleClass="ajax-status" onsuccess="configurarMoeda()">
+			<f:facet name="start">
+				<h:graphicImage library="imagens" name="carregando.gif"/>
+			</f:facet>
+			<f:facet name="complete">
+				<h:outputText value=""/>
+			</f:facet>
+		</p:ajaxStatus>
+	
+		<header>
+			<div style="float: left">
+				<h:link outcome="/Home">
+					<h:graphicImage library="imagens" name="Logo1.png" />
+				</h:link>
+			</div>
+			
+			<div style="float: right; margin-right: 110px">
+				<h:form style="display: inline-block">  
+					<p:menubar styleClass="menu-sistema"> 
+						<p:submenu label="Cadastros" icon="ui-icon-disk">
+							<p:menuitem value="Apolice" outcome="/apoliceSeguro/CadastroApolice.xhtml"/>
+							<p:menuitem value="Fornecedor" outcome="/fornecedor/CadastraFornecedor.xhtml"/>
+							<p:menuitem value="Local" outcome="/local/CadastraLocal.xhtml"/>
+							<p:menuitem value="Tipo" outcome="/tipo/CadastraTipo.xhtml"/>	
+						</p:submenu>
+						<p:menuitem value="Novo patrimonio" icon="ui-icon-circlesmall-plus" outcome="/patrimonio/CadastraPatrimonio.xhtml"/>
+						<p:submenu label="Relatórios" icon="ui-icon-search"> 
+							<p:menuitem value="Patrimonios por status" outcome="/relatorio/PatrimonioPorStatus.xhtml" />
+							<p:menuitem value="Patrimonios por local" outcome="/relatorio/PatrimonioPorLocal.xhtml" />
+						</p:submenu>
+					</p:menubar>
+				</h:form>
+			</div>
+			<div style="clear: both"></div>
+		</header>
+		
+		<div id="conteudo">
+			<ui:insert name="corpo"/>
+		</div>
+	
+		<p:separator style="margin-top: 20px"/> 
+	
+		<footer> 
+			Sistema controle de patrimonios - 
+			Desenvolvivo por Jorge Marinho -
+			Contato - (85)98523-9724 ou 99675-2521
+		</footer>
+		<script>
+		 function configurarMoeda(){
+			 $(".moeda").maskMoney({  decimal:",",thousands:".", allowZero: true});
+		 }
+		 
+		 $(document).ready(function(){
+			 configurarMoeda();
+		 });
+		
+		</script>
+		
+		
+	</h:body>
+
+</html>

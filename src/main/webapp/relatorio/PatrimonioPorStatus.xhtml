@@ -1,0 +1,60 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Relatório</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Patrimonios por status</h1>
+    	
+    	<h:form id="frmFiltro">
+    		<p:messages id="messages" autoUpdate="true" closable="true" />
+    		
+    		<p:toolbar style="margin-top: 20px">
+    			<p:toolbarGroup>
+					<p:commandButton value="Pesquisa" id="botaoPesquisa" action="#{relatorioPatrimonioBean.patrimonioPorStatus}" update="@form" icon="ui-icon-search"/>
+				</p:toolbarGroup>
+    		</p:toolbar>
+    		
+    		<p:panelGrid columns="2" id="painel" style="width: 100%" columnClasses="rotulo, campo">
+			    <p:outputLabel value="Status" for="status"/>
+			    <p:selectOneMenu id="status" value="#{relatorioPatrimonioBean.statusSelecionado}">
+			    <f:selectItem itemLabel="Selecione o status" />
+	    			<f:selectItems value="#{relatorioPatrimonioBean.status}" var="status" 
+						itemLabel="#{mes}" itemValue="#{mes}"/>
+	    		</p:selectOneMenu>
+			</p:panelGrid>
+			
+			<h:panelGroup rendered="#{relatorioPatrimonioBean.statusSelecionado != null}">
+				<h3>Patrimonios por status</h3>
+
+				<p:dataTable id="patrimoniosTable" value="#{relatorioPatrimonioBean.patrimonios}" var="patrimonio"
+		    		style="margin-top: 20px" emptyMessage="Nenhum patrimonio encontrado." rows="5"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		    		
+		    		<p:column headerText="Código" style="text-align: center; width: 100px">
+		    			<h:outputText value="#{patrimonio.codigo}" />
+		    		</p:column>
+		    		<p:column headerText="Descricao">
+		    			<h:outputText value="#{patrimonio.nome}" />
+		    		</p:column>
+		    		<p:column headerText="Nota fiscal">
+		    			<h:outputText value="#{patrimonio.notaFiscal}" />
+		    		</p:column>
+		    		<p:column headerText="Status">
+		    			<h:outputText value="#{patrimonio.status}" />
+		    		</p:column>
+		    		<p:column headerText="Local">
+		    			<h:outputText value="#{patrimonio.local.descricao}" />
+		    		</p:column>
+		    		
+		    </p:dataTable>
+		    
+			</h:panelGroup>
+
+		</h:form>
+    </ui:define>
+</ui:composition>

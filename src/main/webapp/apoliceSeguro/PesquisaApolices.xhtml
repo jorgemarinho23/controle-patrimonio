@@ -1,0 +1,66 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de apolices</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Pesquisa de apolices</h1>
+    	
+    	<h:form id="frmPesquisa">
+    		<p:messages id="messages" autoUpdate="true" closable="true" />
+    		
+    		<p:toolbar style="margin-top: 20px">
+    			<p:toolbarGroup>
+    				<p:commandButton value="Novo" id="botaoNovo" action="/apoliceSeguro/CadastroApolice.xhtml" icon="ui-icon-circlesmall-plus"/>
+    			</p:toolbarGroup>
+    		</p:toolbar>
+    	
+	    	<p:dataTable id="apolicesTable" value="#{pesquisaApoliceBean.apoliceSeguros}" var="apolice"
+		    		style="margin-top: 20px" emptyMessage="Nenhuma apolice encontrada." rows="20"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		    		<p:column headerText="Código" style="text-align: center; width: 100px">
+		    			<h:outputText value="#{apolice.codigo}" />
+		    		</p:column>
+		    		<p:column headerText="Descrição">
+		    			<h:outputText value="#{apolice.descricao}" />
+		    		</p:column>
+		    		<p:column  headerText="Proteção terceiro">
+		    			<p:selectBooleanCheckbox  value="#{apolice.protecaoTerceiro}" disabled="true"/>
+		    		</p:column>
+		    		<p:column  headerText="causas naturais">
+		    			<p:selectBooleanCheckbox  value="#{apolice.protecaoCausasNaturais}" disabled="true"/>
+		    		</p:column>
+		    		<p:column  headerText="Contra roubo">
+		    			<p:selectBooleanCheckbox  value="#{apolice.protecaoRoubo}" disabled="true"/>
+		    		</p:column>
+		    		<p:column headerText="Valor">
+		    			<h:outputText value="#{apolice.valorFranquia}" styleClass="moeda" >
+		    			<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+		    			</h:outputText>
+		    		</p:column>
+		    		
+		    		<p:column style="width: 100px; text-align: center"> 
+		    			<p:button outcome="CadastroApolice" icon="ui-icon-pencil" title="Editar">
+		    				<f:param name="apolice" value="#{apolice.codigo}"/>
+		    			</p:button>
+		    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()"
+								process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+							<f:setPropertyActionListener target="#{pesquisaApoliceBean.apoliceSeguroSelecionada}" value="#{apolice}" />
+						</p:commandButton>
+		    		</p:column>
+		    </p:dataTable>
+		    
+		    <p:confirmDialog id="confirmacaoExclusaoDialog" widgetVar="confirmacaoExclusao"
+	        		message="Tem certeza que deseja excluir a apolice #{pesquisaApoliceBean.apoliceSeguroSelecionada.descricao}?"  
+	                header="Exclusão de apolice" severity="alert">
+	        	<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+	        	<p:commandButton value="Sim" update=":frmPesquisa:apolicesTable"
+	        			onclick="confirmacaoExclusao.hide()" action="#{pesquisaApoliceBean.excluir}" />
+	    	</p:confirmDialog>
+	    </h:form>
+    </ui:define>
+</ui:composition>

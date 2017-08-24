@@ -1,0 +1,67 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Relatório</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Patrimonios por local</h1>
+    	
+    	<h:form id="frmFiltro">
+    		<p:messages id="messages" autoUpdate="true" closable="true" />
+    		
+    		<p:toolbar style="margin-top: 20px">
+    			<p:toolbarGroup>
+					<p:commandButton value="Pesquisa" id="botaoPesquisa" action="#{relatorioPatrimonioPorLocalBean.buscarPorLocal}" update="@form" icon="ui-icon-search"/>
+				</p:toolbarGroup>
+    		</p:toolbar>
+    		
+    		<p:panelGrid columns="2" id="painel" style="width: 100%" columnClasses="rotulo, campo">
+			    <p:outputLabel value="Local" for="local"/>
+			    <p:selectOneMenu id="local" value="#{relatorioPatrimonioPorLocalBean.localSelecionado}">
+			    <f:selectItem itemLabel="Selecione o local" />
+	    			<f:selectItems value="#{relatorioPatrimonioPorLocalBean.locais}" var="local" 
+						itemLabel="#{local.descricao}" itemValue="#{local}"/>
+	    		</p:selectOneMenu>
+			</p:panelGrid>
+			
+			<h:panelGroup rendered="#{relatorioPatrimonioPorLocalBean.localSelecionado != null}">
+				<h3>Patrimonios por local</h3>
+
+				<p:dataTable id="patrimoniosTable" value="#{relatorioPatrimonioPorLocalBean.patrimonios}" var="patrimonio"
+		    		style="margin-top: 20px" emptyMessage="Nenhum patrimonio encontrado." rows="5"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+		    		
+		    		<p:column headerText="Código" style="text-align: center; width: 100px">
+		    			<h:outputText value="#{patrimonio.codigo}" />
+		    		</p:column>
+		    		<p:column headerText="Descricao">
+		    			<h:outputText value="#{patrimonio.nome}" />
+		    		</p:column>
+		    		<p:column headerText="Nota fiscal">
+		    			<h:outputText value="#{patrimonio.notaFiscal}" /> 
+		    		</p:column>
+		    		<p:column headerText="Status">
+		    			<h:outputText value="#{patrimonio.status}" />
+		    		</p:column>
+		    		<p:column headerText="Local">
+		    			<h:outputText value="#{patrimonio.local.descricao}" />
+		    		</p:column>
+		    		
+		    </p:dataTable>
+		    <p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+				<p:commandButton value="Exportar para XLS" ajax="false">
+						<p:dataExporter type="xls" target="patrimoniosTable"
+							fileName="patrimonios por local" postProcessor="#{relatorioPatrimonioPorLocalBean.posProcessarXls}" /> 
+				</p:commandButton>
+				</p:toolbarGroup>
+    		</p:toolbar>
+			</h:panelGroup>
+
+		</h:form>
+    </ui:define>
+</ui:composition>

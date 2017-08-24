@@ -1,0 +1,74 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa Patrimonios</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Pesquisa Patrimonios</h1>
+    	
+    	<h:form id="frmPesquisa">
+    		<p:messages id="messages" autoUpdate="true" closable="true" />
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Novo" id="botaoNovo" action="/patrimonio/CadastraPatrimonio.xhtml" icon="ui-icon-circlesmall-plus"/>
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:dataTable id="patrimoniosTable" value="#{pesquisaPatrimonioBean.patrimonios}" var="patrimonio"
+		    		style="margin-top: 20px" emptyMessage="Nenhum patrimonio encontrado." rows="5"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+		    		lazy="true" rowsPerPageTemplate="5,10,15">
+	    		<p:column headerText="Código" style="text-align: center; width: 100px">
+	    			<h:outputText value="#{patrimonio.codigo}" />
+	    		</p:column>
+	    		<p:column headerText="Nome">
+	    			<h:outputText value="#{patrimonio.nome}" />
+	    		</p:column>
+	    		<p:column headerText="Nota fiscal">
+	    			<h:outputText value="#{patrimonio.notaFiscal}" />
+	    		</p:column>
+	    		<p:column headerText="Valor">
+	    			<h:outputText value="#{patrimonio.valor}" styleClass="moeda" >
+	    			<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+	    			</h:outputText>
+	    		</p:column>
+	    		<p:column headerText="Status">
+	    			<h:outputText value="#{patrimonio.status}" />
+	    		</p:column>
+	    		<p:column headerText="Local">
+	    			<h:outputText value="#{patrimonio.local.descricao}" />
+	    		</p:column>
+	    		<p:column headerText="Tipo">
+	    			<h:outputText value="#{patrimonio.tipo.descricao}" />
+	    		</p:column>
+	    		<p:column headerText="Fornecedor">
+	    			<h:outputText value="#{patrimonio.fornecedor.nome}" />
+	    		</p:column>
+	    		<p:column headerText="Apolice seguro">
+	    			<h:outputText value="#{patrimonio.apoliceSeguro.descricao}" />
+	    		</p:column>
+	    		
+	    		<p:column style="width: 100px; text-align: center">
+		    		<p:button outcome="CadastraPatrimonio" icon="ui-icon-pencil" title="Editar">
+		    			<f:param name="patrimonio" value="#{patrimonio.codigo}"/> 
+		    		</p:button> 
+		    		<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()"
+							process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+						<f:setPropertyActionListener target="#{pesquisaPatrimonioBean.patrimonioSelecionado}" value="#{patrimonio}" />
+					</p:commandButton>
+		    	</p:column>
+		   	</p:dataTable>
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" widgetVar="confirmacaoExclusao"
+	        		message="Tem certeza que deseja excluir o patrimonio #{pesquisaPatrimonioBean.patrimonioSelecionado.nome}?"  
+	                header="Exclusão de patrimonio" severity="alert">
+	        	<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+	        	<p:commandButton value="Sim" update=":frmPesquisa:patrimoniosTable"
+	        			onclick="confirmacaoExclusao.hide()" action="#{pesquisaPatrimonioBean.excluir}" />
+	    	</p:confirmDialog>
+    	</h:form>
+    </ui:define>
+</ui:composition>

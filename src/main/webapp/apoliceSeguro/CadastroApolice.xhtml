@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Nova apolice</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Nova apolice</h1> 
+    	<f:metadata>
+			<o:viewParam name="apolice" value="#{cadastraApoliceSeguroBean.apoliceSeguro}" />
+		</f:metadata> 
+    	
+    	<h:form id="frmCadastro">
+    		<p:messages id="messages" autoUpdate="true" closable="true" />
+    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Salvar" id="botaoSalvar" action="#{cadastraApoliceSeguroBean.salvar}" update="frmCadastro"/>
+	    		</p:toolbarGroup>
+	    		
+	    		<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/apoliceSeguro/PesquisaApolices.xhtml" icon="ui-icon-search"/>
+				</p:toolbarGroup>
+	    	</p:toolbar>
+
+	    	<p:panelGrid columns="2" id="painelApolice" style="width: 100%; margin-top: 20px"
+	    			columnClasses="rotulo, campo">
+	    		<p:outputLabel value="Descrição" for="descricao"/>
+	    		<p:inputText id="descricao" size="30" maxlength="30" value="#{cadastraApoliceSeguroBean.apoliceSeguro.descricao}"/>
+	    			
+		    	<p:outputLabel value="Proteção terceiro" for="protecaoTerceiro"/>
+    			<p:selectBooleanCheckbox id="protecaoTerceiro" value="#{cadastraApoliceSeguroBean.apoliceSeguro.protecaoTerceiro}"/>
+    			
+    			<p:outputLabel value="Proteção causas naturais" for="protecaoCausasNaturais"/>
+    			<p:selectBooleanCheckbox id="protecaoCausasNaturais" value="#{cadastraApoliceSeguroBean.apoliceSeguro.protecaoCausasNaturais}"/>
+    			
+    			<p:outputLabel value="Proteção roubo" for="protecaoRoubo"/>
+    			<p:selectBooleanCheckbox id="protecaoRoubo" value="#{cadastraApoliceSeguroBean.apoliceSeguro.protecaoRoubo}"/>
+    			
+    			<p:outputLabel value="Valor da Franquia" for="valorFranquia"/>
+	    		<p:inputText id="valorFranquia" size="20" maxlength="20" styleClass="moeda" value="#{cadastraApoliceSeguroBean.apoliceSeguro.valorFranquia}">
+	    		<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+	    		</p:inputText>
+    		</p:panelGrid>
+		    		
+    	</h:form>
+    </ui:define>
+</ui:composition>
