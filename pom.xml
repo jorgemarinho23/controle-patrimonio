@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>Controle-Patrimonio</groupId>
   <artifactId>controle-patrimonio</artifactId> 
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version> 
   <packaging>war</packaging> 
   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
